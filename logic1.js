@@ -9,10 +9,12 @@ d3.json(queryUrl).then(data => {
 });
 
 function getColor(d) {
-  return d > 40 ? 'red' :
-         d > 20  ? 'orange' :
+  return d > 160 ? 'darkred' :
+         d > 80 ? 'red' :
+         d > 40 ? 'darkorange' :        
+         d > 20 ? 'orange' :
          d > 10 ? 'yellow' :
-                  'green';
+                  'lightgreen';
 }
 function createFeatures(earthquakeData) {
 
@@ -98,27 +100,27 @@ function createMap(earthquakes, mags) {
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(myMap);
+
+  var legend = L.control({position: 'bottomright'});
+
+  legend.onAdd = function (myMap) {
+    var div = L.DomUtil.create('div', 'info legend'),
+        depths = [0, 10, 20, 40, 80, 160],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < depths.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(depths[i] + 1) + '"></i> ' +
+            depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+  legend.addTo(myMap);
 }
 
-var legend = L.control({position: 'bottomright'});
-    legend.onAdd = function (map) {
-
-    var div = L.DomUtil.create('div', 'info legend');
-    labels = ['<strong>Categories</strong>'],
-    categories = ['<4','<7','<10','>10'];
-
-    for (var i = 0; i < categories.length; i++) {
-
-            div.innerHTML += 
-            labels.push(
-                '<i class="circle" style="background:' + getColor(categories[i]) + '"></i> ' +
-            (categories[i] ? categories[i] : '+'));
-
-        }
-        div.innerHTML = labels.join('<br>');
-    return div;
-    };
-    legend.addTo(myMap);
 
 
   
