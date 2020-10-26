@@ -51,10 +51,10 @@ function createFeatures(earthquakeData) {
   
   
   // Sending our earthquakes layer to the createMap function
-  createMap(earthquakes, mags);
+  createMap(mags, earthquakes);
 }
 
-function createMap(earthquakes, mags) {
+function createMap(mags, earthquakes) {
 
   // Define streetmap and darkmap layers
   const streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -91,7 +91,7 @@ function createMap(earthquakes, mags) {
       37.09, -95.71
     ],
     zoom: 5,
-    layers: [streetmap, earthquakes]
+    layers: [streetmap, mags]
   });
 
   // Create a layer control
@@ -113,7 +113,7 @@ function createMap(earthquakes, mags) {
         div.innerHTML +=
             '<i style="background:' + getColor(depths[i] + 1) + '"></i> ' +
             depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
-
+      
     }
     
     return div;
