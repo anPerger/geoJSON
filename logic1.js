@@ -18,7 +18,7 @@ function createFeatures(earthquakeData) {
   }
 
   function getColor(d) {
-    return d > 10? 'red' :
+    return d > 10 ? 'red' :
            d > 7  ? 'orange' :
            d > 4  ? 'yellow' :
                     'green';
