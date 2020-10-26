@@ -18,9 +18,9 @@ function createFeatures(earthquakeData) {
   }
 
   function getColor(d) {
-    return d > 7 ? 'red' :
-           d > 5  ? 'orange' :
-           d > 3  ? 'yellow' :
+    return d > 10? 'red' :
+           d > 7  ? 'orange' :
+           d > 4  ? 'yellow' :
                     'green';
 }
   // Create a GeoJSON layer containing the features array on the earthquakeData object
@@ -35,7 +35,7 @@ function createFeatures(earthquakeData) {
     onEachFeature: onEachFeature,
     pointToLayer: (feature, latlng) => {
       return new L.Circle(latlng, {
-        radius: feature.properties.mag*20000,
+        radius: feature.properties.mag*75000,
         fillColor: getColor(feature.geometry.coordinates[2]),
         stroke: false 
       });
