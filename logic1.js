@@ -106,15 +106,16 @@ function createMap(earthquakes, mags) {
   legend.onAdd = function (myMap) {
     var div = L.DomUtil.create('div', 'info legend'),
         depths = [0, 10, 20, 40, 80, 160],
-        labels = [];
+        labels = ['<strong> Earthquake Depth in Kilometers <strong>'];
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < depths.length; i++) {
         div.innerHTML +=
             '<i style="background:' + getColor(depths[i] + 1) + '"></i> ' +
             depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1] + '<br>' : '+');
-    }
 
+    }
+    
     return div;
 };
 
