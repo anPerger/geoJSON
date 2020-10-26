@@ -8,21 +8,25 @@ d3.json(queryUrl).then(data => {
   createFeatures(data.features);
 });
 
+function getColor(d) {
+  return d > 40 ? 'red' :
+         d > 20  ? 'orange' :
+         d > 10 ? 'yellow' :
+                  'green';
+}
 function createFeatures(earthquakeData) {
 
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
   function onEachFeature(feature, layer) {
     layer.bindPopup("<h3>" + feature.properties.title +
-      "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
+      "</h3><hr><p>" + new Date(feature.properties.time) + "</p>" +
+      "<p>" + "Magnitude: " + feature.properties.mag + "<p>" +
+      "<p>" + "Depth: " + feature.geometry.coordinates[2] + "<p>"
+      );
   }
 
-  function getColor(d) {
-    return d > 10 ? 'red' :
-           d > 7  ? 'orange' :
-           d > 4  ? 'yellow' :
-                    'green';
-}
+ 
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
   var earthquakes = L.geoJSON(earthquakeData, {
@@ -95,6 +99,26 @@ function createMap(earthquakes, mags) {
     collapsed: false
   }).addTo(myMap);
 }
+
+var legend = L.control({position: 'bottomright'});
+    legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend');
+    labels = ['<strong>Categories</strong>'],
+    categories = ['<4','<7','<10','>10'];
+
+    for (var i = 0; i < categories.length; i++) {
+
+            div.innerHTML += 
+            labels.push(
+                '<i class="circle" style="background:' + getColor(categories[i]) + '"></i> ' +
+            (categories[i] ? categories[i] : '+'));
+
+        }
+        div.innerHTML = labels.join('<br>');
+    return div;
+    };
+    legend.addTo(myMap);
 
 
   
